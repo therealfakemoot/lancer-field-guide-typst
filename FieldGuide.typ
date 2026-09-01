@@ -37,6 +37,7 @@
   FullPageImage,
   FullColImage,
   //Table
+  BreakableLancerTable,
   LancerTable,
   LancerHeaderCell,
   //Boxes
