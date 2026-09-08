@@ -357,7 +357,11 @@ This is an example of how to use a pair of images, but you can also use a single
 img), and it will be divided in two across the two pages.
 
 
-#FullPageImageFramed(image("images/FullPageImg.png", fit: "stretch", width: 100%))
+#FullPageImageFramed(image(
+  "images/FullPageImg.png",
+  fit: "stretch",
+  width: 100%,
+))
 
 == Manual vs Automagic
 
@@ -515,7 +519,10 @@ Placing the frame is more complicated.
 
 == Mechs!
 
-#FrameAutomatic(lcp, "Drake", background: image(width: 7in, "images/IPS-N-Background.png"))
+#FrameAutomatic(lcp, "Drake", background: image(
+  width: 7in,
+  "images/IPS-N-Background.png",
+))
 #FullPageImageFramed(image("images/Drake-Facing.jpg"))
 #LicenseAutomatic(lcp, "Drake", 1)
 #LicenseAutomatic(lcp, "Drake", 2)
@@ -544,7 +551,10 @@ Placing the frame is more complicated.
 == HORUS
 This is where you put the lore and core bonuses and such.
 
-#FrameAutomatic(lcp, "Minotaur", background: image(width: 7in, "images/Horus-Background.png"))
+#FrameAutomatic(lcp, "Minotaur", background: image(
+  width: 7in,
+  "images/Horus-Background.png",
+))
 #LicenseAutomatic(lcp, "Minotaur", 1)
 #LicenseAutomatic(lcp, "Minotaur", 2)
 #LicenseAutomatic(lcp, "Minotaur", 3)

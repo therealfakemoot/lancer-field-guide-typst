@@ -38,27 +38,70 @@
       import cetz.draw: *
       let fw = 7.75
       line((0, 0), (fw, 5), stroke: none)
-      let clr = red.darken(100% * counter(page).get().first() / counter(page).final().first())
+      let clr = red.darken(
+        100% * counter(page).get().first() / counter(page).final().first(),
+      )
       line((0, 0), (0, 1), (0 + 1.625, 0), close: true, stroke: clr, fill: clr)
-      line((0, 1.05), (0, 1.105), (0 + 1.8, 0), (0 + 1.7, 0), close: true, stroke: clr, fill: clr)
-      content((0 + 0.45, 0.3), [#strong(text(fill: white, size: 16pt)[\[#counter(page).display()\]])])
+      line(
+        (0, 1.05),
+        (0, 1.105),
+        (0 + 1.8, 0),
+        (0 + 1.7, 0),
+        close: true,
+        stroke: clr,
+        fill: clr,
+      )
+      content((0 + 0.45, 0.3), [#strong(text(
+        fill: white,
+        size: 16pt,
+      )[\[#counter(page).display()\]])])
     }))
 
     if (SectionName().text.len() > 0) {
-      place(bottom + left, dx: 0.65in, dy: -0.4in, [*SECTION #SectionNumber() \/\/* #SectionName()])
+      place(
+        bottom + left,
+        dx: 0.65in,
+        dy: -0.4in,
+        [*SECTION #SectionNumber() \/\/* #SectionName()],
+      )
     }
   } else {
     if (SectionName().text.len() > 0) {
-      place(bottom + right, dx: -0.65in, dy: -0.4in, [*SECTION #SectionNumber() \/\/* #SectionName()])
+      place(
+        bottom + right,
+        dx: -0.65in,
+        dy: -0.4in,
+        [*SECTION #SectionNumber() \/\/* #SectionName()],
+      )
     }
     align(bottom + left, cetz.canvas(length: 1in, {
       import cetz.draw: *
       let fw = 7.75
       line((0, 0), (fw, 5), stroke: none)
-      let clr = red.darken(100% * counter(page).get().first() / counter(page).final().first())
-      line((fw, 0), (fw, 1), (fw - 1.625, 0), close: true, stroke: clr, fill: clr)
-      line((fw, 1.05), (fw, 1.105), (fw - 1.8, 0), (fw - 1.7, 0), close: true, stroke: clr, fill: clr)
-      content((fw - 0.45, 0.3), [#strong(text(fill: white, size: 16pt)[\[#counter(page).display()\]])])
+      let clr = red.darken(
+        100% * counter(page).get().first() / counter(page).final().first(),
+      )
+      line(
+        (fw, 0),
+        (fw, 1),
+        (fw - 1.625, 0),
+        close: true,
+        stroke: clr,
+        fill: clr,
+      )
+      line(
+        (fw, 1.05),
+        (fw, 1.105),
+        (fw - 1.8, 0),
+        (fw - 1.7, 0),
+        close: true,
+        stroke: clr,
+        fill: clr,
+      )
+      content((fw - 0.45, 0.3), [#strong(text(
+        fill: white,
+        size: 16pt,
+      )[\[#counter(page).display()\]])])
     }))
   }
 }
@@ -70,12 +113,21 @@
       top + right,
       dx: 0.1in,
       dy: 5%,
-      stack(dir: ltr, spacing: 0.2em, rotate(-90deg, reflow: true, [*#upper(SectionName(level: 2, use-last: true))*]), [
-        #set heading(numbering: "1")
-        #text(size: 72pt, fill: red.lighten(60%), [
-          *#SectionNumber()*
-        ])
-      ]),
+      stack(
+        dir: ltr,
+        spacing: 0.2em,
+        rotate(
+          -90deg,
+          reflow: true,
+          [*#upper(SectionName(level: 2, use-last: true))*],
+        ),
+        [
+          #set heading(numbering: "1")
+          #text(size: 72pt, fill: red.lighten(60%), [
+            *#SectionNumber()*
+          ])
+        ],
+      ),
     )
   }
 }
@@ -109,7 +161,14 @@
 /// - Dedication (str): Dedication to go down below the title on the title page.
 /// - body (content)
 /// -> content
-#let Lancer(Title: str, Author: str, CoverImg: none, Description: "Field Guide to Something", Dedication: "", body) = {
+#let Lancer(
+  Title: str,
+  Author: str,
+  CoverImg: none,
+  Description: "Field Guide to Something",
+  Dedication: "",
+  body,
+) = {
   //Set PDF Metadata
   set document(title: Title, author: Author)
   //Set Default Font document settings
@@ -120,7 +179,9 @@
   set list(indent: 0pt, body-indent: 1.5em)
   show list: set par(justify: false)
   set enum(indent: 1em)
-  set heading(numbering: (..arr) => numbering("1.1", ..arr.pos().map(x => calc.max(0, x - 1))))
+  set heading(numbering: (..arr) => numbering("1.1", ..arr
+    .pos()
+    .map(x => calc.max(0, x - 1))))
   show par: it => block(breakable: false)[#it]
 
   //Create default page format
@@ -133,11 +194,17 @@
     margin: (x: 0.75in, top: 0.5in, bottom: 0.8in),
   )
 
-
   counter(page).update(0)
   //Place CoverImage, if it exists
   if (CoverImg != none) {
-    page(margin: 0pt, header: anchor(), footer: none, foreground: none, background: none, columns: 1)[
+    page(
+      margin: 0pt,
+      header: anchor(),
+      footer: none,
+      foreground: none,
+      background: none,
+      columns: 1,
+    )[
       #set image(height: 100%, fit: "stretch")
       #CoverImg
       #hide(place(top, heading(outlined: false, numbering: none, "")))
@@ -190,7 +257,9 @@
     box(width: 100%, text(
       size: 12pt,
       hyphenate: false,
-      align(left)[*#NoKeyword()[#upper(it.element.body) #h(1fr) #it.element.location().page()]*],
+      align(
+        left,
+      )[*#NoKeyword()[#upper(it.element.body) #h(1fr) #it.element.location().page()]*],
     ))
   }
   show outline.entry.where(level: 3): it => {
@@ -198,9 +267,9 @@
       align(
         left,
       )[#h(1.5em) #text(
-        size: 10pt,
-        hyphenate: false,
-      )[*#NoKeyword()[#it.element.body #h(1fr) #it.element.location().page()]*]],
+          size: 10pt,
+          hyphenate: false,
+        )[*#NoKeyword()[#it.element.body #h(1fr) #it.element.location().page()]*]],
     )
   }
   outline(depth: 3, indent: 1em, title: none)
@@ -223,33 +292,39 @@
             outset: (left: 0.75in),
             inset: (top: 0.1in, bottom: 0.2in),
           )[#text(
+              fill: white,
+              size: 32pt,
+            )[#NoKeyword()[#upper(it.body)]
+            ]
+          ])
+          line(
+            "txt.south-east",
+            (rel: (-0.5in, 0)),
+            (rel: (0.5in, 0.3in)),
+            close: true,
+            stroke: white,
             fill: white,
-            size: 32pt,
-          )[#NoKeyword()[#upper(it.body)]
-        ]
-      ])
-      line(
-        "txt.south-east",
-        (rel: (-0.5in, 0)),
-        (rel: (0.5in, 0.3in)),
-        close: true,
-        stroke: white,
-        fill: white,
-      )
-    })),
-  ),
-)
-v(-1em)
+          )
+        })),
+      ),
+    )
+    v(-1em)
   }
 
   show heading.where(level: 3): it => {
-    block(sticky: true, text(size: 18pt)[#align(left)[#NoKeyword()[#upper(it.body)]]])
+    block(sticky: true, text(size: 18pt)[#align(left)[#NoKeyword()[#upper(
+      it.body,
+    )]]])
   }
   show heading.where(level: 4): it => {
-    block(sticky: true, text(size: 14pt)[#align(left)[#NoKeyword()[#upper(it.body)]]])
+    block(sticky: true, text(size: 14pt)[#align(left)[#NoKeyword()[#upper(
+      it.body,
+    )]]])
   }
   show heading.where(level: 5): it => {
-    block(sticky: true, text(fill: red)[#align(left)[#NoKeyword()[#upper(it.body)]]])
+    block(sticky: true, text(fill: red)[#align(left)[#NoKeyword()[#upper(
+      it.body,
+    )]]])
   }
 
   //Reset Page counter to 1, and let's go!
@@ -275,11 +350,20 @@ v(-1em)
   }
   outline(
     target: selector(heading)
-    .after(query(selector(heading.where(level: 1)).before(here())).last().location(), inclusive: false)
-    .before(
-      query(selector(heading.where(level: 1)).after(here()).or(selector(<eof>))).first().location(),
-      inclusive: false,
-    ),
+      .after(
+        query(selector(heading.where(level: 1)).before(here()))
+          .last()
+          .location(),
+        inclusive: false,
+      )
+      .before(
+        query(
+          selector(heading.where(level: 1)).after(here()).or(selector(<eof>)),
+        )
+          .first()
+          .location(),
+        inclusive: false,
+      ),
     ..args,
   )
 }
@@ -294,25 +378,31 @@ v(-1em)
     width: 100%,
     height: 20%,
     fill: white,
-    box(width: 100%, height: 97.5%, fill: red, inset: 0.75in, align(left + horizon, [
-      #set text(fill: white, size: 20pt)
-      *SECTION #SectionNumber()* \
-      #set text(fill: white, size: 48pt)
-      *#upper(SectionName())* #label(name)
-    ])),
+    box(width: 100%, height: 97.5%, fill: red, inset: 0.75in, align(
+      left + horizon,
+      [
+        #set text(fill: white, size: 20pt)
+        *SECTION #SectionNumber()* \
+        #set text(fill: white, size: 48pt)
+        *#upper(SectionName())* #label(name)
+      ],
+    )),
   ))
 
   place(center + bottom, box(
     width: 100%,
     height: 20%,
     fill: white,
-    box(width: 100%, height: 97.5%, fill: red, inset: 0.75in, align(left + horizon, [
-      #set text(fill: white)
-      #set heading(numbering: none)
-      #columns(2)[
-        #local-outline(title: none, depth: 2)
-      ]
-    ])),
+    box(width: 100%, height: 97.5%, fill: red, inset: 0.75in, align(
+      left + horizon,
+      [
+        #set text(fill: white)
+        #set heading(numbering: none)
+        #columns(2)[
+          #local-outline(title: none, depth: 2)
+        ]
+      ],
+    )),
   ))
 }
 
@@ -322,7 +412,10 @@ v(-1em)
 
   let PlaceImg() = {
     if (type(img) == array) {
-      assert(img.len() == 1 or img.len() == 2, message: "Either One or Two images required for the cover.")
+      assert(
+        img.len() == 1 or img.len() == 2,
+        message: "Either One or Two images required for the cover.",
+      )
       if (img.len() == 1) {
         img.at(0)
       } else {
@@ -338,12 +431,15 @@ v(-1em)
     width: 100%,
     height: 20%,
     fill: white,
-    box(width: 100%, height: 97.5%, fill: red, inset: 0.75in, align(left + horizon, [
-      #set text(fill: white, size: 20pt)
-      *SECTION #SectionNumber()* \
-      #set text(fill: white, size: 48pt)
-      *#upper(SectionName())* #label(name)
-    ])),
+    box(width: 100%, height: 97.5%, fill: red, inset: 0.75in, align(
+      left + horizon,
+      [
+        #set text(fill: white, size: 20pt)
+        *SECTION #SectionNumber()* \
+        #set text(fill: white, size: 48pt)
+        *#upper(SectionName())* #label(name)
+      ],
+    )),
   ))
 
   pagebreak()
@@ -352,13 +448,16 @@ v(-1em)
     width: 100%,
     height: 20%,
     fill: white,
-    box(width: 100%, height: 97.5%, fill: red, inset: 0.75in, align(left + horizon, [
-      #set text(fill: white)
-      #set heading(numbering: none)
-      #columns(2)[
-        #local-outline(title: none, depth: 2)
-      ]
-    ])),
+    box(width: 100%, height: 97.5%, fill: red, inset: 0.75in, align(
+      left + horizon,
+      [
+        #set text(fill: white)
+        #set heading(numbering: none)
+        #columns(2)[
+          #local-outline(title: none, depth: 2)
+        ]
+      ],
+    )),
   ))
 }
 
@@ -379,25 +478,25 @@ v(-1em)
             outset: (left: 0.75in),
             inset: (top: 0.1in, bottom: 0.1in),
           )[#text(
+              fill: white,
+              size: 32pt,
+            )[#NoKeyword()[#upper(it.body)]
+            ]\
+            #text(fill: white, size: 18pt, sub-text)])
+          line(
+            "txt.south-east",
+            (rel: (-0.4in, 0)),
+            (rel: (0.4in, 0.4in)),
+            close: true,
+            stroke: white,
             fill: white,
-            size: 32pt,
-          )[#NoKeyword()[#upper(it.body)]
-        ]\
-        #text(fill: white, size: 18pt, sub-text)])
-        line(
-          "txt.south-east",
-          (rel: (-0.4in, 0)),
-          (rel: (0.4in, 0.4in)),
-          close: true,
-          stroke: white,
-          fill: white,
-        )
-      })),
-    ),
-  )
-  v(-1em)
-}
-heading(level: 2, name)
+          )
+        })),
+      ),
+    )
+    v(-1em)
+  }
+  heading(level: 2, name)
 }
 
 #let FullPageImageFramed(img) = {
@@ -439,7 +538,12 @@ heading(level: 2, name)
         dy: -ydiff * 1in + 0.1in,
         float: false,
         scope: "column",
-        [#figure(img, numbering: refname, kind: "ColImage", supplement: none)#label(img.path)],
+        [#figure(
+            img,
+            numbering: refname,
+            kind: "ColImage",
+            supplement: none,
+          )#label(img.path)],
       )
       colbreak()
     } else {
@@ -449,7 +553,12 @@ heading(level: 2, name)
         dy: -ydiff * 1in + 0.1in,
         float: false,
         scope: "column",
-        [#figure(img, numbering: refname, kind: "ColImage", supplement: none)#label(img.path)],
+        [#figure(
+            img,
+            numbering: refname,
+            kind: "ColImage",
+            supplement: none,
+          )#label(img.path)],
       )
       colbreak()
     }
@@ -460,9 +569,14 @@ heading(level: 2, name)
   text(fill: red, hyphenate: false, [*#NoKeyword(upper(body))*])
 }
 
-#let BreakableLancerTable(title: str, instructions: str, fill_function: calc.odd, ..tableargs) = {
-  context{
-    set page(columns:1)
+#let BreakableLancerTable(
+  title: str,
+  instructions: str,
+  fill_function: calc.odd,
+  ..tableargs,
+) = {
+  context {
+    set page(columns: 1)
     block(
       width: 100%,
       fill: red,
@@ -472,21 +586,28 @@ heading(level: 2, name)
         fill: white,
         inset: 0.5em,
         [
-          #text(size: 16pt)[*#upper(title)*] #h(1fr) #text(fill: tablegrey.darken(40%))[*#upper(instructions)*]
+          #text(size: 16pt)[*#upper(title)*] #h(1fr) #text(
+            fill: tablegrey.darken(40%),
+          )[*#upper(instructions)*]
           #v(-1em)
           #table(
             stroke: none,
             align: left,
-            fill: (_, y) => if (fill_function(y)) { tablegrey } else {  white  },
+            fill: (_, y) => if (fill_function(y)) { tablegrey } else { white },
             ..tableargs,
           )
         ],
-      )
+      ),
     )
   }
 }
 
-#let LancerTable(title: str, instructions: str, fill_function: calc.odd, ..tableargs) = {
+#let LancerTable(
+  title: str,
+  instructions: str,
+  fill_function: calc.odd,
+  ..tableargs,
+) = {
   box(
     width: 100%,
     fill: red,
@@ -496,11 +617,15 @@ heading(level: 2, name)
       fill: white,
       inset: 0.5em,
       [
-        #text(size: 16pt)[*#upper(title)*] #h(1fr) #text(fill: tablegrey.darken(40%))[*#upper(instructions)*]
+        #text(size: 16pt)[*#upper(title)*] #h(1fr) #text(
+          fill: tablegrey.darken(40%),
+        )[*#upper(instructions)*]
         #v(-1em)
-        #table(stroke: none, align: left, fill: (_, y) => if (fill_function(y)) { tablegrey } else {
-          white
-        }, ..tableargs)
+        #table(stroke: none, align: left, fill: (_, y) => if (
+            fill_function(y)
+          ) { tablegrey } else {
+            white
+          }, ..tableargs)
       ],
     ),
   )
@@ -522,7 +647,11 @@ heading(level: 2, name)
           let special-rect(element, name: none) = group(
             ctx => {
               let w = cetz.util.resolve-number(ctx, 1)
-              let (_, n, s) = cetz.coordinate.resolve(ctx, element + ".north", element + ".south")
+              let (_, n, s) = cetz.coordinate.resolve(
+                ctx,
+                element + ".north",
+                element + ".south",
+              )
               let h = cetz.vector.dist(n, s)
               let a = cetz.util.resolve-number(ctx, 0.75cm)
               if (h < cetz.util.resolve-number(ctx, 1cm) and drawing != none) {
@@ -532,25 +661,45 @@ heading(level: 2, name)
               }
               fill(clr)
               stroke(none)
-              line((0, 0), (w, 0), (w, h - a), (w - a + 0.003, h - a + 0.003), (w - a + 0.003, h), (0, h))
+              line(
+                (0, 0),
+                (w, 0),
+                (w, h - a),
+                (w - a + 0.003, h - a + 0.003),
+                (w - a + 0.003, h),
+                (0, h),
+              )
               set-viewport((w - a, h - a), (w, h))
               drawing
             },
             name: name,
           )
 
-
           content(
             (0, 0),
             anchor: "south-west",
-            align(left + horizon, box(width: 0.9 * size.width, inset: (x: 0.5em, y: .3em), [
-              #text(fill: white, hyphenate: false, size: 12pt, [*#NoKeyword(title)*])
-              #if (title_tech != none) {
-                linebreak()
-                AutoSymbolize(text(fill: white, font: "Ubuntu Mono", hyphenate: false, NoKeyword(title_tech)))
-                sym.zws
-              }
-            ])),
+            align(left + horizon, box(
+              width: 0.9 * size.width,
+              inset: (x: 0.5em, y: .3em),
+              [
+                #text(
+                  fill: white,
+                  hyphenate: false,
+                  size: 12pt,
+                  [*#NoKeyword(title)*],
+                )
+                #if (title_tech != none) {
+                  linebreak()
+                  AutoSymbolize(text(
+                    fill: white,
+                    font: "Ubuntu Mono",
+                    hyphenate: false,
+                    NoKeyword(title_tech),
+                  ))
+                  sym.zws
+                }
+              ],
+            )),
             name: "content",
           )
           on-layer(-1, special-rect("content", name: "my-rect"))
@@ -561,32 +710,69 @@ heading(level: 2, name)
 }
 
 //TODO: Make this like the TitleBox
-#let ContentBox(clr: color, clip: "bottom-right", txt: none, flavor_text: none) = {
-  [#box(fill: clr.lighten(90%), width: 100%, inset: (x: 0.5em, top: 0.3em, bottom: .5em), [
-    #if (clip == "bottom-right") {
-      place(bottom + right, dx: 0.5em, dy: 0.5em, layout(sz => cetz.canvas(length: sz.width, {
-        import cetz.draw: *
-        line((1, 0), (0.93, -0.0431), (1, -0.0431), close: true, fill: white, stroke: none)
-      })))
-    } else if (clip == "top-right") {
-      place(top + right, dx: 0.5em, dy: -0.3em, layout(sz => cetz.canvas(length: sz.width, {
-        import cetz.draw: *
-        line((1, 0), (0.93, 0.0431), (1, 0.0431), close: true, fill: white, stroke: none)
-      })))
-    }
+#let ContentBox(
+  clr: color,
+  clip: "bottom-right",
+  txt: none,
+  flavor_text: none,
+) = {
+  [#box(
+      fill: clr.lighten(90%),
+      width: 100%,
+      inset: (x: 0.5em, top: 0.3em, bottom: .5em),
+      [
+        #if (clip == "bottom-right") {
+          place(bottom + right, dx: 0.5em, dy: 0.5em, layout(sz => cetz.canvas(
+            length: sz.width,
+            {
+              import cetz.draw: *
+              line(
+                (1, 0),
+                (0.93, -0.0431),
+                (1, -0.0431),
+                close: true,
+                fill: white,
+                stroke: none,
+              )
+            },
+          )))
+        } else if (clip == "top-right") {
+          place(top + right, dx: 0.5em, dy: -0.3em, layout(sz => cetz.canvas(
+            length: sz.width,
+            {
+              import cetz.draw: *
+              line(
+                (1, 0),
+                (0.93, 0.0431),
+                (1, 0.0431),
+                close: true,
+                fill: white,
+                stroke: none,
+              )
+            },
+          )))
+        }
 
-    #set par(spacing: 0.75em)
-    #set par(justify: false);
-    #AutoSymbolize(txt)
-    #if (txt != none and flavor_text != none and flavor_text != "") {
-      v(-0.5em) + repeat[.]
-    }
-    #text(font: "Ubuntu Mono", NoKeyword(emph(flavor_text)))
-  ])
-]
+        #set par(spacing: 0.75em)
+        #set par(justify: false);
+        #AutoSymbolize(txt)
+        #if (txt != none and flavor_text != none and flavor_text != "") {
+          v(-0.5em) + repeat[.]
+        }
+        #text(font: "Ubuntu Mono", NoKeyword(emph(flavor_text)))
+      ],
+    )
+  ]
 }
 
-#let Infobox(clr: color, title: none, title_tech: none, body: none, flavor_text: none, drawing: none) = {
+#let Infobox(
+  clr: color,
+  title: none,
+  title_tech: none,
+  body: none,
+  flavor_text: none,
+  drawing: none,
+) = {
   box(
     grid(
       columns: 1,
@@ -624,10 +810,22 @@ heading(level: 2, name)
     })
     arc((1, 0.8), start: 90deg, stop: 270deg, radius: 0.3, mode: "PIE")
   }
-  Infobox(clr: black, title: title, title_tech: title_tech, body: body, flavor_text: flavor_text, drawing: drawing)
+  Infobox(
+    clr: black,
+    title: title,
+    title_tech: title_tech,
+    body: body,
+    flavor_text: flavor_text,
+    drawing: drawing,
+  )
 }
 
-#let ProtocolBox(title: none, title_tech: none, body: none, flavor_text: none) = {
+#let ProtocolBox(
+  title: none,
+  title_tech: none,
+  body: none,
+  flavor_text: none,
+) = {
   let drawing = {
     import cetz.draw: *
     merge-path(close: true, {
@@ -661,8 +859,20 @@ heading(level: 2, name)
   )
 }
 
-#let PassiveBox(title: none, title_tech: none, body: none, flavor_text: none) = {
-  Infobox(clr: red, title: title, title_tech: title_tech, body: body, flavor_text: flavor_text, drawing: none)
+#let PassiveBox(
+  title: none,
+  title_tech: none,
+  body: none,
+  flavor_text: none,
+) = {
+  Infobox(
+    clr: red,
+    title: title,
+    title_tech: title_tech,
+    body: body,
+    flavor_text: flavor_text,
+    drawing: none,
+  )
 }
 
 #let ReactionBox(title: none, title_tech: none, trigger: none, body: none) = {
@@ -696,7 +906,11 @@ heading(level: 2, name)
     box(grid(
       columns: 1,
       TitleBox(clr: reactionteal, drawing: drawing, title, title_tech),
-      box(width: 100%, inset: (x: 0.5em, y: .65em), fill: white)[*Trigger:* #trigger],
+      box(
+        width: 100%,
+        inset: (x: 0.5em, y: .65em),
+        fill: white,
+      )[*Trigger:* #trigger],
       ContentBox(clr: reactionteal, txt: [*Effect:* #body]),
     ))
   } else {
@@ -713,18 +927,37 @@ heading(level: 2, name)
     import cetz.draw: *
     line((1, 0.2), (1, 0), (0, 0), (0, 1), (0.2, 1))
   }
-  Infobox(clr: gearbrown, title: title, title_tech: title_tech, body: body, flavor_text: flavor_text, drawing: drawing)
+  Infobox(
+    clr: gearbrown,
+    title: title,
+    title_tech: title_tech,
+    body: body,
+    flavor_text: flavor_text,
+    drawing: drawing,
+  )
 }
 
 #let BoxInset(clr: color, body) = {
-  box(width: 100%, fill: white, outset: (x: 0.5em), inset: (y: 0.65em), stroke: (y: clr), body)
+  box(
+    width: 100%,
+    fill: white,
+    outset: (x: 0.5em),
+    inset: (y: 0.65em),
+    stroke: (y: clr),
+    body,
+  )
 }
 
 #let AutoBox(activation: str, ..args) = {
   let d = args.named().pairs()
   d = d.filter(a => { a.at(1) != none }).to-dict()
   let args = arguments(..d)
-  if (activation == "Free" or activation == "Quick" or activation == "Full" or activation == "Other") {
+  if (
+    activation == "Free"
+      or activation == "Quick"
+      or activation == "Full"
+      or activation == "Other"
+  ) {
     ActionBox(..args)
   } else if (activation == "Protocol") {
     assert(
@@ -732,7 +965,11 @@ heading(level: 2, name)
       message: "Trigger not none: " + args.named().at("title", default: none),
     )
     ProtocolBox(..args)
-  } else if (activation == "Invade" or activation == "Full Tech" or activation == "Quick Tech") {
+  } else if (
+    activation == "Invade"
+      or activation == "Full Tech"
+      or activation == "Quick Tech"
+  ) {
     TechBox(..args)
   } else if (activation == "Reaction") {
     ReactionBox(..args)
@@ -753,7 +990,11 @@ heading(level: 2, name)
         let special-rect(element, name: none) = group(
           ctx => {
             let w = cetz.util.resolve-number(ctx, 1)
-            let (_, n, s) = cetz.coordinate.resolve(ctx, element + ".north", element + ".south")
+            let (_, n, s) = cetz.coordinate.resolve(
+              ctx,
+              element + ".north",
+              element + ".south",
+            )
             let h = cetz.vector.dist(n, s)
 
             fill(red)
@@ -763,27 +1004,31 @@ heading(level: 2, name)
           name: name,
         )
 
-
         content(
           (0, 0),
           anchor: "south-west",
           box(
             width: 0.9 * size.width,
             inset: (x: 0.3em, y: 0.3em),
-            text(fill: white, hyphenate: false, size: 10pt, [*#upper(NoKeyword(title))*
-            #h(1fr)
-            #if (type) {
-              text(font: "Ubuntu Mono")[Trait]
-            }
-          ]),
-        ),
-        name: "content",
-      )
-      on-layer(-1, special-rect("content", name: "my-rect"))
-    }),
-    ContentBox(clip: false, clr: red, txt: body),
-  ))
-})
+            text(
+              fill: white,
+              hyphenate: false,
+              size: 10pt,
+              [*#upper(NoKeyword(title))*
+                #h(1fr)
+                #if (type) {
+                  text(font: "Ubuntu Mono")[Trait]
+                }
+              ],
+            ),
+          ),
+          name: "content",
+        )
+        on-layer(-1, special-rect("content", name: "my-rect"))
+      }),
+      ContentBox(clip: false, clr: red, txt: body),
+    ))
+  })
 }
 
 #let MountBox(title) = {
@@ -810,7 +1055,6 @@ heading(level: 2, name)
         name: name,
       )
 
-
       content(
         (0, 0),
         anchor: "south-west",
@@ -827,13 +1071,22 @@ heading(level: 2, name)
 }
 
 #let PlaceTalent(talent) = {
-  assert(talent.at("name", default: none) != none, message: "talent needs field: name, a string")
-  assert(talent.at("description", default: none) != none, message: "talent needs field: description, a content")
+  assert(
+    talent.at("name", default: none) != none,
+    message: "talent needs field: name, a string",
+  )
+  assert(
+    talent.at("description", default: none) != none,
+    message: "talent needs field: description, a content",
+  )
   assert(
     talent.at("ranks", default: none) != none,
     message: "talent needs field: ranks, an array of 3x(name:string,description:content)",
   )
-  assert(talent.ranks.len() == 3, message: "talent needs field: ranks, an array of 3x(name:string,description:content)")
+  assert(
+    talent.ranks.len() == 3,
+    message: "talent needs field: ranks, an array of 3x(name:string,description:content)",
+  )
   assert(
     talent.ranks.at(0).at("name", default: none) != none,
     message: "talent.ranks.at(0) needs field: name, a string",
@@ -859,7 +1112,11 @@ heading(level: 2, name)
     message: "talent.ranks.at(2) needs field: description, a content",
   )
 
-  box(width: 100%, fill: talentblue, inset: 0.3em, text(size: 18pt, fill: white, [*#upper(NoKeyword(talent.name))*]))
+  box(width: 100%, fill: talentblue, inset: 0.3em, text(
+    size: 18pt,
+    fill: white,
+    [*#upper(NoKeyword(talent.name))*],
+  ))
 
   [#emph(talent.description)]
   v(-1em)
@@ -976,8 +1233,12 @@ heading(level: 2, name)
   if ("edef" in d) { dtxt = [#dtxt*, E-Defense #procval(d.edef)*] }
   if ("heatcap" in d) { dtxt = [#dtxt*, Heat Cap #procval(d.heatcap)*] }
   if ("repcap" in d) { dtxt = [#dtxt*, Repair Cap #procval(d.repcap)*] }
-  if ("sensor_range" in d) { dtxt = [#dtxt*, Sensors #procval(d.sensor_range)*] }
-  if ("tech_attack" in d) { dtxt = [#dtxt*, Tech Attack #procval(d.tech_attack)*] }
+  if ("sensor_range" in d) {
+    dtxt = [#dtxt*, Sensors #procval(d.sensor_range)*]
+  }
+  if ("tech_attack" in d) {
+    dtxt = [#dtxt*, Tech Attack #procval(d.tech_attack)*]
+  }
   if ("save" in d) { dtxt = [#dtxt*, Save Target #procval(d.save)*] }
   if ("speed" in d) { dtxt = [#dtxt*, Speed #procval(d.speed)*] }
   if ("tags" in d) {
@@ -1109,7 +1370,10 @@ heading(level: 2, name)
     eff.push(ParseDeployable(lcp, d))
   }
   eff = eff.dedup().join("\n")
-  WeaponBox(title: weap.name, title_tech: tech, body: eff, flavor_text: weap.at("description", default: none))
+  WeaponBox(title: weap.name, title_tech: tech, body: eff, flavor_text: weap.at(
+    "description",
+    default: none,
+  ))
 
   for aa in weap.at("actions", default: ()) {
     let tech = aa.at("title_tech", default: [#UtilActionText(aa.activation)])
@@ -1158,28 +1422,31 @@ heading(level: 2, name)
 
   for (idx, r) in talent.ranks.enumerate() {
     talent.ranks.at(idx).description = AutoSymbolize([#r.description
-    #if ("actions" in r) {
-      for act in r.actions {
-        if (act.name != r.name or act.at("description", default: "") != r.description) {
-          AutoBox(
-            activation: act.activation,
-            title: act.name,
-            title_tech: UtilActionText(act.activation),
-            trigger: act.at("trigger", default: none),
-            body: act.detail,
-          )
+      #if ("actions" in r) {
+        for act in r.actions {
+          if (
+            act.name != r.name
+              or act.at("description", default: "") != r.description
+          ) {
+            AutoBox(
+              activation: act.activation,
+              title: act.name,
+              title_tech: UtilActionText(act.activation),
+              trigger: act.at("trigger", default: none),
+              body: act.detail,
+            )
+          }
         }
       }
-    }
-    #if ("integrated" in r) {
-      for w in r.integrated {
-        let weap = lcp.weapons.find(w => { w.id == w })
-        ParseWeapon(lcp, weap)
+      #if ("integrated" in r) {
+        for w in r.integrated {
+          let weap = lcp.weapons.find(w => { w.id == w })
+          ParseWeapon(lcp, weap)
+        }
       }
-    }
-  ])
-}
-talent
+    ])
+  }
+  talent
 }
 
 //Go from Systems.json to box
@@ -1218,21 +1485,36 @@ talent
   }
   let utype = upper(sys.at("type", default: "SYSTEM"))
   let sub_actions = false
-  if (utype == "DEPLOYABLE" or utype == "DRONE" or utype == "SHIELD" or utype == "SYSTEM") {
+  if (
+    utype == "DEPLOYABLE"
+      or utype == "DRONE"
+      or utype == "SHIELD"
+      or utype == "SYSTEM"
+  ) {
     if ("actions" in sys or "deployables" in sys) {
       if ("actions" in sys and sys.actions.at(0).at("name", default: 0) == 0) {
         let a = sys.actions.at(0)
         tech.insert(0, [#a.activation Action])
         sys.activation = a.activation
         eff.push(a.detail)
-      } else if ("deployables" in sys and sys.deployables.at(0).at("name", default: 0) == 0) {
+      } else if (
+        "deployables" in sys
+          and sys.deployables.at(0).at("name", default: 0) == 0
+      ) {
         let a = sys.actions.at(0)
         tech.insert(0, [#a.activation Action])
         sys.activation = a.activation
         eff.push(a.detail)
-      } else if ("actions" in sys and sys.actions.at(0).at("activation", default: "") == "Reaction") {
+      } else if (
+        "actions" in sys
+          and sys.actions.at(0).at("activation", default: "") == "Reaction"
+      ) {
         sys.activation = "Passive"
-        eff.push("Gain the " + strong(NoKeyword(sys.actions.at(0).name)) + " reaction.")
+        eff.push(
+          "Gain the "
+            + strong(NoKeyword(sys.actions.at(0).name))
+            + " reaction.",
+        )
       } else {
         let litems = ()
         for a in sys.at("actions", default: ()) {
@@ -1263,8 +1545,15 @@ talent
       flavor_text: sys.at("description", default: none),
     )
     for aa in sys.at("actions", default: ()) {
-      if ("name" in aa and aa.name != sys.name and "activation" in aa and aa.activation == "Reaction") {
-        let tech = aa.at("title_tech", default: [#UtilActionText(aa.activation)])
+      if (
+        "name" in aa
+          and aa.name != sys.name
+          and "activation" in aa
+          and aa.activation == "Reaction"
+      ) {
+        let tech = aa.at("title_tech", default: [#UtilActionText(
+          aa.activation,
+        )])
         linebreak()
         AutoBox(
           activation: aa.activation,
@@ -1280,40 +1569,57 @@ talent
       if (
         (
           sys.actions.at(0).activation == "Invade"
-          or sys.actions.at(0).activation == "Quick Tech"
-          or sys.actions.at(0).activation == "Full Tech"
+            or sys.actions.at(0).activation == "Quick Tech"
+            or sys.actions.at(0).activation == "Full Tech"
         )
-        and "name" in sys.actions.at(0)
+          and "name" in sys.actions.at(0)
       ) {
-        eff.push("Gain the following " + sys.actions.at(0).activation + " options:")
+        eff.push(
+          "Gain the following " + sys.actions.at(0).activation + " options:",
+        )
       } else {
         eff.push(sys.actions.at(0).detail)
       }
       tech.insert(0, sys.actions.at(0).activation)
     }
     for i in sys
-    .at("actions", default: ())
-    .filter(
-      iv => (
-        (
-          upper(iv.activation) == "INVADE"
-          or upper(iv.activation) == "QUICK TECH"
-          or upper(iv.activation) == "FULL TECH"
-        )
-        and "name" in iv
-      ),
-    ) {
-      eff.push(box(width: 100%, fill: white, outset: (x: 0.5em), inset: (y: 0.65em), stroke: (y: narrativepurple), [
-        *#i.name:* #i.detail
-      ]))
+      .at("actions", default: ())
+      .filter(
+        iv => (
+          (
+            upper(iv.activation) == "INVADE"
+              or upper(iv.activation) == "QUICK TECH"
+              or upper(iv.activation) == "FULL TECH"
+          )
+            and "name" in iv
+        ),
+      ) {
+      eff.push(box(
+        width: 100%,
+        fill: white,
+        outset: (x: 0.5em),
+        inset: (y: 0.65em),
+        stroke: (y: narrativepurple),
+        [
+          *#i.name:* #i.detail
+        ],
+      ))
     }
     tech = tech.dedup().join(", ")
     eff = eff.dedup().join("\n")
-    TechBox(title: sys.name, title_tech: tech, body: eff, flavor_text: sys.at("description", default: none))
+    TechBox(title: sys.name, title_tech: tech, body: eff, flavor_text: sys.at(
+      "description",
+      default: none,
+    ))
   } else {
     tech = tech.dedup().join(", ")
     eff = eff.dedup().join("\n")
-    PassiveBox(title: sys.name, title_tech: tech, body: eff, flavor_text: sys.at("description", default: none))
+    PassiveBox(
+      title: sys.name,
+      title_tech: tech,
+      body: eff,
+      flavor_text: sys.at("description", default: none),
+    )
     for aa in sys.at("actions", default: ()) {
       let tech = aa.at("title_tech", default: [#UtilActionText(aa.activation)])
       block(AutoBox(
@@ -1373,7 +1679,6 @@ talent
     prefix = prefix + " on a " + allowed_mounts.join(" or ") + " mount."
   }
 
-
   mod.effect = prefix + "\n" + mod.effect
   ParseSystem(lcp, mod)
 }
@@ -1387,10 +1692,15 @@ talent
       //TODO: Magic Numbers.  504pt is the width of a page, so it's what the figure uses.
       // Measured on a blank page and manually typed it in because you can't measure it.
       // -4em is.... No idea, actually.
-      sz.height = (sz.height - measure(figure, width: 504pt).height - 4em).to-absolute()
+      sz.height = (
+        sz.height - measure(figure, width: 504pt).height - 4em
+      ).to-absolute()
       //This is to measure the -4em. The bottom should line up with the box.
       // place(line(length: sz.height, angle:90deg, stroke:blue))
-      let sizes = content_array.map(c => measure(block(breakable: false, c), width: sz.width)) //List of all the sizes
+      let sizes = content_array.map(c => measure(
+        block(breakable: false, c),
+        width: sz.width,
+      )) //List of all the sizes
       let c1 = sz.height //For 1st and 2nd column record the size
       let c2 = sz.height //We'll count down, so init at total size
       let c2idx = -1 //What element tips to 2nd column?, for the 0.2em adjustment
@@ -1454,7 +1764,9 @@ talent
   //Now for the 2nd page
   context {
     //If there are any that were not placed...
-    if (query(label(frame.name + "c_" + str(content_array.len() - 1))).len() == 0) {
+    if (
+      query(label(frame.name + "c_" + str(content_array.len() - 1))).len() == 0
+    ) {
       //New page
       pagebreak()
       //Create the blocks with the borders
@@ -1480,7 +1792,10 @@ talent
   let content_array = ()
 
   for pa in core_system.at("passive_actions", default: ()) {
-    let tech = pa.at("title_tech", default: [Passive, #UtilActionText(pa.activation)])
+    let tech = pa.at(
+      "title_tech",
+      default: [Passive, #UtilActionText(pa.activation)],
+    )
 
     content_array.push(AutoBox(
       activation: pa.activation,
@@ -1493,48 +1808,54 @@ talent
 
   if (
     ("passive_effect" in core_system)
-    and not (core_system.passive_name in core_system.at("passive_actions", default: ()).map(pa => pa.name))
+      and not (
+        core_system.passive_name
+          in core_system.at("passive_actions", default: ()).map(pa => pa.name)
+      )
   ) {
     let body = core_system.passive_effect
     if ("deployables" in core_system) {
       body = [#body
-      #linebreak()
-      #linebreak()
-      #list(..core_system.deployables.map(d => ParseDeployable(lcp, d)))
-    ]
+        #linebreak()
+        #linebreak()
+        #list(..core_system.deployables.map(d => ParseDeployable(lcp, d)))
+      ]
+    }
+    content_array.push(PassiveBox(
+      title: core_system.passive_name,
+      body: AutoSymbolize(body),
+    ))
   }
-  content_array.push(PassiveBox(title: core_system.passive_name, body: AutoSymbolize(body)))
-}
 
-content_array.push(AutoBox(
-  activation: core_system.activation,
-  title: core_system.active_name,
-  title_tech: [Active (1CP), #UtilActionText(core_system.activation)],
-  trigger: core_system.at("trigger", default: none),
-  body: AutoSymbolize(core_system.active_effect),
-))
-
-for aa in core_system.at("active_actions", default: ()) {
-  let tech = aa.at("title_tech", default: [#UtilActionText(aa.activation)])
   content_array.push(AutoBox(
-    activation: aa.activation,
-    title: aa.name,
-    title_tech: AutoSymbolize(tech),
-    trigger: aa.at("trigger", default: none),
-    body: AutoSymbolize(aa.detail),
+    activation: core_system.activation,
+    title: core_system.active_name,
+    title_tech: [Active (1CP), #UtilActionText(core_system.activation)],
+    trigger: core_system.at("trigger", default: none),
+    body: AutoSymbolize(core_system.active_effect),
   ))
-}
 
-for weap_id in core_system.at("integrated", default: ()) {
-  let weap = lcp.weapons.find(w => { w.id == weap_id })
-  content_array.push(ParseWeapon(lcp, weap))
-}
+  for aa in core_system.at("active_actions", default: ()) {
+    let tech = aa.at("title_tech", default: [#UtilActionText(aa.activation)])
+    content_array.push(AutoBox(
+      activation: aa.activation,
+      title: aa.name,
+      title_tech: AutoSymbolize(tech),
+      trigger: aa.at("trigger", default: none),
+      body: AutoSymbolize(aa.detail),
+    ))
+  }
 
-for weap_id in core_system.at("special_equipment", default: ()) {
-  let weap = lcp.weapons.find(w => { w.id == weap_id })
-  content_array.push(ParseWeapon(lcp, weap))
-}
-content_array
+  for weap_id in core_system.at("integrated", default: ()) {
+    let weap = lcp.weapons.find(w => { w.id == weap_id })
+    content_array.push(ParseWeapon(lcp, weap))
+  }
+
+  for weap_id in core_system.at("special_equipment", default: ()) {
+    let weap = lcp.weapons.find(w => { w.id == weap_id })
+    content_array.push(ParseWeapon(lcp, weap))
+  }
+  content_array
 }
 
 #let PlaceCoreSystem(name, description, blocks) = {
@@ -1542,7 +1863,9 @@ content_array
   content_array.push([
     #set par(spacing: 1em)
     #block(sticky: true, text(size: 18pt)[*CORE SYSTEMS*])
-    #block(sticky: true, text(size: 16pt, hyphenate: false, upper(strong(NoKeyword(name)))))
+    #block(sticky: true, text(size: 16pt, hyphenate: false, upper(strong(
+      NoKeyword(name),
+    ))))
     #if (description != none) {
       text(font: "Ubuntu Mono", emph((NoKeyword(description))))
     }
@@ -1555,7 +1878,9 @@ content_array
 #let PlaceMounts(mounts) = {
   let content_array = ()
   if (mounts.len() > 0) {
-    content_array.push(block(sticky: true, [#v(1em) #text(size: 14pt)[*MOUNTS*]]))
+    content_array.push(block(sticky: true, [#v(1em) #text(
+        size: 14pt,
+      )[*MOUNTS*]]))
     content_array.push([
       #for m in mounts {
         MountBox([#m\ Mount]) + h(2em)
@@ -1572,7 +1897,10 @@ content_array
       if ("description" in trait) {
         block(TraitBox(title: trait.name, AutoSymbolize(trait.description)))
       } else if ("effect" in trait) {
-        block(TraitBox(title: trait.name, AutoSymbolize(trait.effect)), type: true)
+        block(
+          TraitBox(title: trait.name, AutoSymbolize(trait.effect)),
+          type: true,
+        )
       }
     }
     for ta in trait.actions {
@@ -1589,42 +1917,88 @@ content_array
     if ("description" in trait) {
       block(TraitBox(title: trait.name, AutoSymbolize(trait.description)))
     } else if ("effect" in trait) {
-      block(TraitBox(title: trait.name, AutoSymbolize(trait.effect), type: true))
+      block(TraitBox(
+        title: trait.name,
+        AutoSymbolize(trait.effect),
+        type: true,
+      ))
     }
   }
 }
 
 #let PlaceFrame(frame, traits_blocks, mounts, core_system, background: none) = {
-  assert(frame.at("name", default: none) != none, message: "frame needs the field: name, a string")
+  assert(
+    frame.at("name", default: none) != none,
+    message: "frame needs the field: name, a string",
+  )
   assert(
     frame.at("mechtype", default: none) != none,
     message: "frame needs the field: mechtype, an array of strings with possible values (Artillery, Biological, Controller, Defender, Striker, Support, Balanced)",
   )
-  assert(frame.at("source", default: none) != none, message: "frame needs the field: source, a string")
-  assert(frame.at("description", default: none) != none, message: "frame needs the field: description, a string")
-  assert(frame.at("stats", default: none) != none, message: "frame needs the field: stats, a dictionary")
+  assert(
+    frame.at("source", default: none) != none,
+    message: "frame needs the field: source, a string",
+  )
+  assert(
+    frame.at("description", default: none) != none,
+    message: "frame needs the field: description, a string",
+  )
+  assert(
+    frame.at("stats", default: none) != none,
+    message: "frame needs the field: stats, a dictionary",
+  )
   assert(
     frame.stats.at("size", default: none) != none,
     message: "frame.stats needs the field: size, a number with possible values (0.5, 1, 2, 3, 4)",
   )
-  assert(frame.stats.at("armor", default: none) != none, message: "frame.stats needs the field: armor, a number")
-  assert(frame.stats.at("hp", default: none) != none, message: "frame.stats needs the field: hp, a number")
-  assert(frame.stats.at("repcap", default: none) != none, message: "frame.stats needs the field: repcap, a number")
-  assert(frame.stats.at("evasion", default: none) != none, message: "frame.stats needs the field: evasion, a number")
-  assert(frame.stats.at("speed", default: none) != none, message: "frame.stats needs the field: speed, a number")
-  assert(frame.stats.at("save", default: none) != none, message: "frame.stats needs the field: save, a number")
+  assert(
+    frame.stats.at("armor", default: none) != none,
+    message: "frame.stats needs the field: armor, a number",
+  )
+  assert(
+    frame.stats.at("hp", default: none) != none,
+    message: "frame.stats needs the field: hp, a number",
+  )
+  assert(
+    frame.stats.at("repcap", default: none) != none,
+    message: "frame.stats needs the field: repcap, a number",
+  )
+  assert(
+    frame.stats.at("evasion", default: none) != none,
+    message: "frame.stats needs the field: evasion, a number",
+  )
+  assert(
+    frame.stats.at("speed", default: none) != none,
+    message: "frame.stats needs the field: speed, a number",
+  )
+  assert(
+    frame.stats.at("save", default: none) != none,
+    message: "frame.stats needs the field: save, a number",
+  )
   assert(
     frame.stats.at("sensor_range", default: none) != none,
     message: "frame.stats needs the field: sensor_range, a number",
   )
-  assert(frame.stats.at("edef", default: none) != none, message: "frame.stats needs the field: edef, a number")
+  assert(
+    frame.stats.at("edef", default: none) != none,
+    message: "frame.stats needs the field: edef, a number",
+  )
   assert(
     frame.stats.at("tech_attack", default: none) != none,
     message: "frame.stats needs the field: tech_attack, a number",
   )
-  assert(frame.stats.at("sp", default: none) != none, message: "frame.stats needs the field: sp, a number")
-  assert(frame.stats.at("heatcap", default: none) != none, message: "frame.stats needs the field: heatcap, a number")
-  assert(core_system.at("name", default: none) != none, message: "core_system needs the field: name, a string")
+  assert(
+    frame.stats.at("sp", default: none) != none,
+    message: "frame.stats needs the field: sp, a number",
+  )
+  assert(
+    frame.stats.at("heatcap", default: none) != none,
+    message: "frame.stats needs the field: heatcap, a number",
+  )
+  assert(
+    core_system.at("name", default: none) != none,
+    message: "core_system needs the field: name, a string",
+  )
   assert(
     core_system.at("blocks", default: none) != none,
     message: "core_system needs the field: blocks, an array of blocks representing the core_system, may be empty",
@@ -1671,7 +2045,12 @@ content_array
 
   let f = figure(placement: top, scope: "parent", [
     #context {
-      place(center + top, dy: 5.5in - measure(background).height / 2, float: false, background)
+      place(
+        center + top,
+        dy: 5.5in - measure(background).height / 2,
+        float: false,
+        background,
+      )
     }
     #place(top + left, dx: -0.5in, float: false, text(size: 50pt, fill: red)[
       #Util-size2char(frame.stats.size)
@@ -1689,7 +2068,9 @@ content_array
           #frame.source\
           *#upper(frame.name)* #if (frame.at("variant", default: none) != none) { [*(#frame.variant Alt)*] }
         ]\
-        #text(fill: red, font: "Ubuntu Mono", [#v(-0.5em) #frame.mechtype.join("/")])
+        #text(fill: red, font: "Ubuntu Mono", [#v(-0.5em) #frame.mechtype.join(
+            "/",
+          )])
         #v(-1em)
         #align(left, text(font: "Ubuntu Mono", NoKeyword([
           #set par(spacing: 1.2em)
@@ -1708,7 +2089,11 @@ content_array
         height: 100% - pos.y + 0.65in + 2pt,
         inset: 4pt,
         box(stroke: red + 2pt, width: 100%, height: 100%, inset: 8pt)[
-          #place(top + center, float: false, line(length: 100%, angle: 90deg, stroke: red + 2pt))
+          #place(top + center, float: false, line(
+            length: 100%,
+            angle: 90deg,
+            stroke: red + 2pt,
+          ))
         ],
       ))
     }
@@ -1721,7 +2106,9 @@ content_array
   content_array.push(StatBlock(frame.stats))
 
   if (traits_blocks.len() > 0) {
-    content_array.push(block(sticky: true, [#v(1em) #text(size: 14pt)[*TRAITS*]]))
+    content_array.push(block(sticky: true, [#v(1em) #text(
+        size: 14pt,
+      )[*TRAITS*]]))
     content_array += traits_blocks
   }
 
@@ -1729,7 +2116,11 @@ content_array
 
   let possible_colbreak_idx = content_array.len()
 
-  content_array += PlaceCoreSystem(core_system.name, core_system.at("description", default: none), core_system.blocks)
+  content_array += PlaceCoreSystem(
+    core_system.name,
+    core_system.at("description", default: none),
+    core_system.blocks,
+  )
 
   PlaceBlocks(frame, content_array, possible_colbreak_idx, f)
 }
@@ -1739,7 +2130,13 @@ content_array
   let trait_blocks = frame.traits.map(t => ParseTrait(t))
   frame.core_system.blocks = ParseCoreSystem(lcp, frame.core_system)
 
-  PlaceFrame(frame, trait_blocks, frame.mounts, frame.core_system, background: background)
+  PlaceFrame(
+    frame,
+    trait_blocks,
+    frame.mounts,
+    frame.core_system,
+    background: background,
+  )
 }
 
 #let PlaceLicenseHeader(level, names) = {
@@ -1787,19 +2184,30 @@ content_array
     names.push(license + " FRAME")
   }
   for s in lcp.systems.filter(sys => {
-    upper(sys.at("license", default: "")) == license and sys.at("license_level", default: 0) == level
+    (
+      upper(sys.at("license", default: "")) == license
+        and sys.at("license_level", default: 0) == level
+    )
   }) {
     names.push(s.name)
     blocks.push(ParseSystem(lcp, s))
   }
   for m in lcp.mods.filter(mod => {
-    upper(mod.at("license", default: "")) == license and mod.at("license_level", default: 0) == level
+    (
+      upper(mod.at("license", default: "")) == license
+        and mod.at("license_level", default: 0) == level
+    )
   }) {
     names.push(m.name)
     blocks.push(ParseMod(lcp, m))
   }
   for w in lcp.weapons.filter(
-    weap => { upper(weap.at("license", default: "")) == license and weap.at("license_level", default: 0) == level },
+    weap => {
+      (
+        upper(weap.at("license", default: "")) == license
+          and weap.at("license_level", default: 0) == level
+      )
+    },
   ) {
     names.push(w.name)
     blocks.push(ParseWeapon(lcp, w))
@@ -1848,16 +2256,25 @@ content_array
 
   let f = figure(placement: top, scope: "parent", [
     #context {
-      place(center + top, dy: 5.5in - measure(background).height / 2, float: false, background)
+      place(
+        center + top,
+        dy: 5.5in - measure(background).height / 2,
+        float: false,
+        background,
+      )
     }
     #place(top + left, dx: -0.1in, float: false, text(size: 50pt, fill: red)[
-      #for sz in frame.stats.size.fold((), (acc, it) => acc + it).dedup().sorted() {
+      #for sz in (
+        frame.stats.size.fold((), (acc, it) => acc + it).dedup().sorted()
+      ) {
         Util-size2char(sz)
         linebreak()
         v(-1.4em)
       }
     ])
-    #let role = frame.role.split("/").map(r => upper(r.at(0)) + lower(r.slice(1)))
+    #let role = (
+      frame.role.split("/").map(r => upper(r.at(0)) + lower(r.slice(1)))
+    )
     #place(top + right, dx: 0.1in, float: false, text(size: 50pt, fill: red)[
       #for r in role {
         CC.at(r)
