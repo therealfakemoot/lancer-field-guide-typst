@@ -245,12 +245,16 @@
     box(width: 100%)[
       #box(width: 100%, fill: red, inset: 4pt)[
         #align(left)[#text(size: 12pt, fill: white)[*SECTION #it.prefix():*]]
-      ]\
-      #text(
+      ]
+      #link(
+      it.element.location(),
+      text(
         fill: red,
         hyphenate: false,
         size: 24pt,
+        // put a link here???
       )[*#NoKeyword()[#upper(it.element.body) #h(1fr) #it.element.location().page()]*]
+    )
     ]
   }
   show outline.entry.where(level: 2): it => {
@@ -259,17 +263,23 @@
       hyphenate: false,
       align(
         left,
-      )[*#NoKeyword()[#upper(it.element.body) #h(1fr) #it.element.location().page()]*],
+        link(
+          it.element.location(),
+          [*#NoKeyword()[#upper(it.element.body) #h(1fr) #it.element.location().page()]*],
+        ))
     ))
   }
   show outline.entry.where(level: 3): it => {
     box(
       align(
         left,
-      )[#h(1.5em) #text(
+      link(
+        it.element.location(),
+        [#h(1.5em) #text(
           size: 10pt,
           hyphenate: false,
         )[*#NoKeyword()[#it.element.body #h(1fr) #it.element.location().page()]*]],
+      ))
     )
   }
   outline(depth: 3, indent: 1em, title: none)
