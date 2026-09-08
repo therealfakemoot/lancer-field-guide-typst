@@ -198,16 +198,17 @@
       align(
         left,
       )[#h(1.5em) #text(
-          size: 10pt,
-          hyphenate: false,
-        )[*#NoKeyword()[#it.element.body #h(1fr) #it.element.location().page()]*]],
+        size: 10pt,
+        hyphenate: false,
+      )[*#NoKeyword()[#it.element.body #h(1fr) #it.element.location().page()]*]],
     )
   }
   outline(depth: 3, indent: 1em, title: none)
 
   // Set up headings (gotta be styled after #outline)
   show heading.where(level: 2): it => {
-    pagebreak(weak: true)
+    // pagebreak(weak: true)
+    colbreak(weak: true)
     figure(
       placement: top,
       scope: "parent",
@@ -222,23 +223,23 @@
             outset: (left: 0.75in),
             inset: (top: 0.1in, bottom: 0.2in),
           )[#text(
-              fill: white,
-              size: 32pt,
-            )[#NoKeyword()[#upper(it.body)]
-            ]
-          ])
-          line(
-            "txt.south-east",
-            (rel: (-0.5in, 0)),
-            (rel: (0.5in, 0.3in)),
-            close: true,
-            stroke: white,
             fill: white,
-          )
-        })),
-      ),
-    )
-    v(-1em)
+            size: 32pt,
+          )[#NoKeyword()[#upper(it.body)]
+        ]
+      ])
+      line(
+        "txt.south-east",
+        (rel: (-0.5in, 0)),
+        (rel: (0.5in, 0.3in)),
+        close: true,
+        stroke: white,
+        fill: white,
+      )
+    })),
+  ),
+)
+v(-1em)
   }
 
   show heading.where(level: 3): it => {
@@ -274,16 +275,48 @@
   }
   outline(
     target: selector(heading)
-      .after(query(selector(heading.where(level: 1)).before(here())).last().location(), inclusive: false)
-      .before(
-        query(selector(heading.where(level: 1)).after(here()).or(selector(<eof>))).first().location(),
-        inclusive: false,
-      ),
+    .after(query(selector(heading.where(level: 1)).before(here())).last().location(), inclusive: false)
+    .before(
+      query(selector(heading.where(level: 1)).after(here()).or(selector(<eof>))).first().location(),
+      inclusive: false,
+    ),
     ..args,
   )
 }
 
-#let Section(name, img: none) = context {
+#let Section(name) = context {
+  pagebreak(to: "even", weak: true)
+  set page(background: none, footer: none, columns: 1, margin: 0pt)
+
+  place(top + center, hide()[= #name])
+
+  place(center + top, box(
+    width: 100%,
+    height: 20%,
+    fill: white,
+    box(width: 100%, height: 97.5%, fill: red, inset: 0.75in, align(left + horizon, [
+      #set text(fill: white, size: 20pt)
+      *SECTION #SectionNumber()* \
+      #set text(fill: white, size: 48pt)
+      *#upper(SectionName())* #label(name)
+    ])),
+  ))
+
+  place(center + bottom, box(
+    width: 100%,
+    height: 20%,
+    fill: white,
+    box(width: 100%, height: 97.5%, fill: red, inset: 0.75in, align(left + horizon, [
+      #set text(fill: white)
+      #set heading(numbering: none)
+      #columns(2)[
+        #local-outline(title: none, depth: 2)
+      ]
+    ])),
+  ))
+}
+
+#let SectionWithImages(name, img: none) = context {
   pagebreak(to: "even", weak: true)
   set page(background: none, footer: none, columns: 1, margin: 0pt)
 
@@ -346,25 +379,25 @@
             outset: (left: 0.75in),
             inset: (top: 0.1in, bottom: 0.1in),
           )[#text(
-              fill: white,
-              size: 32pt,
-            )[#NoKeyword()[#upper(it.body)]
-            ]\
-            #text(fill: white, size: 18pt, sub-text)])
-          line(
-            "txt.south-east",
-            (rel: (-0.4in, 0)),
-            (rel: (0.4in, 0.4in)),
-            close: true,
-            stroke: white,
             fill: white,
-          )
-        })),
-      ),
-    )
-    v(-1em)
-  }
-  heading(level: 2, name)
+            size: 32pt,
+          )[#NoKeyword()[#upper(it.body)]
+        ]\
+        #text(fill: white, size: 18pt, sub-text)])
+        line(
+          "txt.south-east",
+          (rel: (-0.4in, 0)),
+          (rel: (0.4in, 0.4in)),
+          close: true,
+          stroke: white,
+          fill: white,
+        )
+      })),
+    ),
+  )
+  v(-1em)
+}
+heading(level: 2, name)
 }
 
 #let FullPageImageFramed(img) = {
@@ -428,29 +461,29 @@
 }
 
 #let BreakableLancerTable(title: str, instructions: str, fill_function: calc.odd, ..tableargs) = {
-context{
-set page(columns:1)
-block(
-  width: 100%,
-  fill: red,
-  inset: 0.5em,
-  block(
-    width: 100%,
-    fill: white,
-    inset: 0.5em,
-    [
-#text(size: 16pt)[*#upper(title)*] #h(1fr) #text(fill: tablegrey.darken(40%))[*#upper(instructions)*]
-#v(-1em)
-#table(
-stroke: none,
-align: left,
-fill: (_, y) => if (fill_function(y)) { tablegrey } else {  white  },
-..tableargs,
-)
-    ],
-  )
-)
-}
+  context{
+    set page(columns:1)
+    block(
+      width: 100%,
+      fill: red,
+      inset: 0.5em,
+      block(
+        width: 100%,
+        fill: white,
+        inset: 0.5em,
+        [
+          #text(size: 16pt)[*#upper(title)*] #h(1fr) #text(fill: tablegrey.darken(40%))[*#upper(instructions)*]
+          #v(-1em)
+          #table(
+            stroke: none,
+            align: left,
+            fill: (_, y) => if (fill_function(y)) { tablegrey } else {  white  },
+            ..tableargs,
+          )
+        ],
+      )
+    )
+  }
 }
 
 #let LancerTable(title: str, instructions: str, fill_function: calc.odd, ..tableargs) = {
@@ -466,8 +499,8 @@ fill: (_, y) => if (fill_function(y)) { tablegrey } else {  white  },
         #text(size: 16pt)[*#upper(title)*] #h(1fr) #text(fill: tablegrey.darken(40%))[*#upper(instructions)*]
         #v(-1em)
         #table(stroke: none, align: left, fill: (_, y) => if (fill_function(y)) { tablegrey } else {
-            white
-          }, ..tableargs)
+          white
+        }, ..tableargs)
       ],
     ),
   )
@@ -530,27 +563,27 @@ fill: (_, y) => if (fill_function(y)) { tablegrey } else {  white  },
 //TODO: Make this like the TitleBox
 #let ContentBox(clr: color, clip: "bottom-right", txt: none, flavor_text: none) = {
   [#box(fill: clr.lighten(90%), width: 100%, inset: (x: 0.5em, top: 0.3em, bottom: .5em), [
-      #if (clip == "bottom-right") {
-        place(bottom + right, dx: 0.5em, dy: 0.5em, layout(sz => cetz.canvas(length: sz.width, {
-          import cetz.draw: *
-          line((1, 0), (0.93, -0.0431), (1, -0.0431), close: true, fill: white, stroke: none)
-        })))
-      } else if (clip == "top-right") {
-        place(top + right, dx: 0.5em, dy: -0.3em, layout(sz => cetz.canvas(length: sz.width, {
-          import cetz.draw: *
-          line((1, 0), (0.93, 0.0431), (1, 0.0431), close: true, fill: white, stroke: none)
-        })))
-      }
+    #if (clip == "bottom-right") {
+      place(bottom + right, dx: 0.5em, dy: 0.5em, layout(sz => cetz.canvas(length: sz.width, {
+        import cetz.draw: *
+        line((1, 0), (0.93, -0.0431), (1, -0.0431), close: true, fill: white, stroke: none)
+      })))
+    } else if (clip == "top-right") {
+      place(top + right, dx: 0.5em, dy: -0.3em, layout(sz => cetz.canvas(length: sz.width, {
+        import cetz.draw: *
+        line((1, 0), (0.93, 0.0431), (1, 0.0431), close: true, fill: white, stroke: none)
+      })))
+    }
 
-      #set par(spacing: 0.75em)
-      #set par(justify: false);
-      #AutoSymbolize(txt)
-      #if (txt != none and flavor_text != none and flavor_text != "") {
-        v(-0.5em) + repeat[.]
-      }
-      #text(font: "Ubuntu Mono", NoKeyword(emph(flavor_text)))
-    ])
-  ]
+    #set par(spacing: 0.75em)
+    #set par(justify: false);
+    #AutoSymbolize(txt)
+    #if (txt != none and flavor_text != none and flavor_text != "") {
+      v(-0.5em) + repeat[.]
+    }
+    #text(font: "Ubuntu Mono", NoKeyword(emph(flavor_text)))
+  ])
+]
 }
 
 #let Infobox(clr: color, title: none, title_tech: none, body: none, flavor_text: none, drawing: none) = {
@@ -738,19 +771,19 @@ fill: (_, y) => if (fill_function(y)) { tablegrey } else {  white  },
             width: 0.9 * size.width,
             inset: (x: 0.3em, y: 0.3em),
             text(fill: white, hyphenate: false, size: 10pt, [*#upper(NoKeyword(title))*
-              #h(1fr)
-              #if (type) {
-                text(font: "Ubuntu Mono")[Trait]
-              }
-            ]),
-          ),
-          name: "content",
-        )
-        on-layer(-1, special-rect("content", name: "my-rect"))
-      }),
-      ContentBox(clip: false, clr: red, txt: body),
-    ))
-  })
+            #h(1fr)
+            #if (type) {
+              text(font: "Ubuntu Mono")[Trait]
+            }
+          ]),
+        ),
+        name: "content",
+      )
+      on-layer(-1, special-rect("content", name: "my-rect"))
+    }),
+    ContentBox(clip: false, clr: red, txt: body),
+  ))
+})
 }
 
 #let MountBox(title) = {
@@ -1125,28 +1158,28 @@ fill: (_, y) => if (fill_function(y)) { tablegrey } else {  white  },
 
   for (idx, r) in talent.ranks.enumerate() {
     talent.ranks.at(idx).description = AutoSymbolize([#r.description
-      #if ("actions" in r) {
-        for act in r.actions {
-          if (act.name != r.name or act.at("description", default: "") != r.description) {
-            AutoBox(
-              activation: act.activation,
-              title: act.name,
-              title_tech: UtilActionText(act.activation),
-              trigger: act.at("trigger", default: none),
-              body: act.detail,
-            )
-          }
+    #if ("actions" in r) {
+      for act in r.actions {
+        if (act.name != r.name or act.at("description", default: "") != r.description) {
+          AutoBox(
+            activation: act.activation,
+            title: act.name,
+            title_tech: UtilActionText(act.activation),
+            trigger: act.at("trigger", default: none),
+            body: act.detail,
+          )
         }
       }
-      #if ("integrated" in r) {
-        for w in r.integrated {
-          let weap = lcp.weapons.find(w => { w.id == w })
-          ParseWeapon(lcp, weap)
-        }
+    }
+    #if ("integrated" in r) {
+      for w in r.integrated {
+        let weap = lcp.weapons.find(w => { w.id == w })
+        ParseWeapon(lcp, weap)
       }
-    ])
-  }
-  talent
+    }
+  ])
+}
+talent
 }
 
 //Go from Systems.json to box
@@ -1247,10 +1280,10 @@ fill: (_, y) => if (fill_function(y)) { tablegrey } else {  white  },
       if (
         (
           sys.actions.at(0).activation == "Invade"
-            or sys.actions.at(0).activation == "Quick Tech"
-            or sys.actions.at(0).activation == "Full Tech"
+          or sys.actions.at(0).activation == "Quick Tech"
+          or sys.actions.at(0).activation == "Full Tech"
         )
-          and "name" in sys.actions.at(0)
+        and "name" in sys.actions.at(0)
       ) {
         eff.push("Gain the following " + sys.actions.at(0).activation + " options:")
       } else {
@@ -1259,17 +1292,17 @@ fill: (_, y) => if (fill_function(y)) { tablegrey } else {  white  },
       tech.insert(0, sys.actions.at(0).activation)
     }
     for i in sys
-      .at("actions", default: ())
-      .filter(
-        iv => (
-          (
-            upper(iv.activation) == "INVADE"
-              or upper(iv.activation) == "QUICK TECH"
-              or upper(iv.activation) == "FULL TECH"
-          )
-            and "name" in iv
-        ),
-      ) {
+    .at("actions", default: ())
+    .filter(
+      iv => (
+        (
+          upper(iv.activation) == "INVADE"
+          or upper(iv.activation) == "QUICK TECH"
+          or upper(iv.activation) == "FULL TECH"
+        )
+        and "name" in iv
+      ),
+    ) {
       eff.push(box(width: 100%, fill: white, outset: (x: 0.5em), inset: (y: 0.65em), stroke: (y: narrativepurple), [
         *#i.name:* #i.detail
       ]))
@@ -1460,48 +1493,48 @@ fill: (_, y) => if (fill_function(y)) { tablegrey } else {  white  },
 
   if (
     ("passive_effect" in core_system)
-      and not (core_system.passive_name in core_system.at("passive_actions", default: ()).map(pa => pa.name))
+    and not (core_system.passive_name in core_system.at("passive_actions", default: ()).map(pa => pa.name))
   ) {
     let body = core_system.passive_effect
     if ("deployables" in core_system) {
       body = [#body
-        #linebreak()
-        #linebreak()
-        #list(..core_system.deployables.map(d => ParseDeployable(lcp, d)))
-      ]
-    }
-    content_array.push(PassiveBox(title: core_system.passive_name, body: AutoSymbolize(body)))
+      #linebreak()
+      #linebreak()
+      #list(..core_system.deployables.map(d => ParseDeployable(lcp, d)))
+    ]
   }
+  content_array.push(PassiveBox(title: core_system.passive_name, body: AutoSymbolize(body)))
+}
 
+content_array.push(AutoBox(
+  activation: core_system.activation,
+  title: core_system.active_name,
+  title_tech: [Active (1CP), #UtilActionText(core_system.activation)],
+  trigger: core_system.at("trigger", default: none),
+  body: AutoSymbolize(core_system.active_effect),
+))
+
+for aa in core_system.at("active_actions", default: ()) {
+  let tech = aa.at("title_tech", default: [#UtilActionText(aa.activation)])
   content_array.push(AutoBox(
-    activation: core_system.activation,
-    title: core_system.active_name,
-    title_tech: [Active (1CP), #UtilActionText(core_system.activation)],
-    trigger: core_system.at("trigger", default: none),
-    body: AutoSymbolize(core_system.active_effect),
+    activation: aa.activation,
+    title: aa.name,
+    title_tech: AutoSymbolize(tech),
+    trigger: aa.at("trigger", default: none),
+    body: AutoSymbolize(aa.detail),
   ))
+}
 
-  for aa in core_system.at("active_actions", default: ()) {
-    let tech = aa.at("title_tech", default: [#UtilActionText(aa.activation)])
-    content_array.push(AutoBox(
-      activation: aa.activation,
-      title: aa.name,
-      title_tech: AutoSymbolize(tech),
-      trigger: aa.at("trigger", default: none),
-      body: AutoSymbolize(aa.detail),
-    ))
-  }
+for weap_id in core_system.at("integrated", default: ()) {
+  let weap = lcp.weapons.find(w => { w.id == weap_id })
+  content_array.push(ParseWeapon(lcp, weap))
+}
 
-  for weap_id in core_system.at("integrated", default: ()) {
-    let weap = lcp.weapons.find(w => { w.id == weap_id })
-    content_array.push(ParseWeapon(lcp, weap))
-  }
-
-  for weap_id in core_system.at("special_equipment", default: ()) {
-    let weap = lcp.weapons.find(w => { w.id == weap_id })
-    content_array.push(ParseWeapon(lcp, weap))
-  }
-  content_array
+for weap_id in core_system.at("special_equipment", default: ()) {
+  let weap = lcp.weapons.find(w => { w.id == weap_id })
+  content_array.push(ParseWeapon(lcp, weap))
+}
+content_array
 }
 
 #let PlaceCoreSystem(name, description, blocks) = {
