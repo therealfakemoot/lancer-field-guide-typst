@@ -151,6 +151,20 @@
 #let talentblue = color.rgb(58, 129, 195)
 #let techactionplum = color.rgb(125, 36, 119)
 #let narrativepurple = color.rgb(135, 0, 127)
+#let horus-subtle = gradient.linear(
+  purple.darken(60%),
+  purple.darken(20%),
+  purple.darken(60%),
+  angle: 0deg,
+  relative: "parent",
+)
+#let horus-blatant = gradient.radial(
+  (green.darken(25%), 0%),
+  (green.darken(25%), 25%),
+  (blue.darken(25%), 60%),
+  (purple, 100%),
+  focal-center: (50%, 10%),
+)
 
 /// Defines the Lancer template
 ///

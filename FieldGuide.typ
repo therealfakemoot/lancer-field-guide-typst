@@ -19,6 +19,8 @@
   talentblue,
   techactionplum,
   narrativepurple,
+  horus-blatant,
+  horus-subtle,
   //Symbols
   CC,
   //Functions
