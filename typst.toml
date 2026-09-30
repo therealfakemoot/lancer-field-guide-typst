@@ -7,4 +7,4 @@ license = "MIT"
 description = "Build douments in the style of the Lancer TTRPG core handbook."
 repository = "https://github.com/therealfakemoot/lancer-field-guide-typst"
 keywords = ["lancer", "ttrpg", "tabletop"]
-exclude= ["*.pdf"]
+exclude= ["*.pdf", "*.png", "*.jpg"]
