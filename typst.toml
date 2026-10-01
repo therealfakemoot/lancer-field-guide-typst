@@ -1,10 +1,9 @@
 [package]
 name = "lancer-field-guide-typst"
-version = "0.0.1"
+version = "0.0.2"
 entrypoint = "FieldGuide.typ"
 authors = ["Tetragramm", "Nick Dumas"]
 license = "MIT"
 description = "Build douments in the style of the Lancer TTRPG core handbook."
 repository = "https://github.com/therealfakemoot/lancer-field-guide-typst"
 keywords = ["lancer", "ttrpg", "tabletop"]
-exclude= ["*.pdf", "*.png", "*.jpg"]
