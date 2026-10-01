@@ -11,3 +11,4 @@ keywords = ["lancer", "ttrpg", "tabletop"]
 [template]
 path = "template"
 entrypoint = "main.typ"
+thumbnail = "images/thumbnail.png"

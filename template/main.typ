@@ -1,10 +1,10 @@
-#import "FieldGuide.typ": *
+#import "@preview/lancer-field-guide-typst:0.0.2" as guide
 
 
 #let title = "Your Project"
 #let author = "Your Name"
 
-#show: Lancer.with(
+#show: guide.Lancer.with(
   Title: title,
   Author: author,
   CoverImg: none,
